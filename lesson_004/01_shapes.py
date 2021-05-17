@@ -28,6 +28,69 @@ import simple_draw as sd
 # Результат решения см lesson_004/results/exercise_01_shapes.jpg
 
 # TODO здесь ваш код
+def treag(startPoint, angle, length):
+    listPoint = []
+    step = 360 / 3
+    angle_i = angle
+    for i in range(3):
+        v = sd.get_vector(startPoint, angle_i, length)
+        angle_i += step
+        listPoint.append(v.end_point)
+        if i > 0:
+            sd.line(listPoint[i-1],listPoint[i], width=3)
+    sd.line(listPoint[0], listPoint[-1], width=3)
+
+
+def square(startPoint, angle, length):
+    listPoint = []
+    step = 360 / 4
+    angle_i = angle
+    for i in range(4):
+        v = sd.get_vector(startPoint, angle_i, length)
+        angle_i += step
+        listPoint.append(v.end_point)
+        if i > 0:
+            sd.line(listPoint[i-1],listPoint[i], width=3)
+    sd.line(listPoint[0], listPoint[-1], width=3)
+
+
+def penta(startPoint, angle, length):
+    listPoint = []
+    step = 360 / 5
+    angle_i = angle
+    for i in range(5):
+        v = sd.get_vector(startPoint, angle_i, length)
+        angle_i += step
+        listPoint.append(v.end_point)
+        if i > 0:
+            sd.line(listPoint[i-1],listPoint[i], width=3)
+    sd.line(listPoint[0], listPoint[-1], width=3)
+
+
+def hexa(startPoint, angle, length):
+    listPoint = []
+    step = 360 / 6
+    angle_i = angle
+    for i in range(6):
+        v = sd.get_vector(startPoint, angle_i, length)
+        angle_i += step
+        listPoint.append(v.end_point)
+        if i > 0:
+            sd.line(listPoint[i-1],listPoint[i], width=3)
+    sd.line(listPoint[0], listPoint[-1], width=3)
+
+
+point = sd.get_point(150,150)
+point2 = sd.get_point(150,450)
+point3 = sd.get_point(400,450)
+point4 = sd.get_point(400,150)
+angle = 10
+length = 60
+
+treag(point, angle, length)
+square(point2, angle, length)
+penta(point3, angle, length)
+hexa(point4, angle, length)
 
 # Часть 1-бис.
 # Попробуйте прикинуть обьем работы, если нужно будет внести изменения в этот код.
