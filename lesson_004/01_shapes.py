@@ -80,6 +80,19 @@ def hexa(startPoint, angle, length):
     sd.line(listPoint[0], listPoint[-1], width=3)
 
 
+def draw_fig(startPoint, angle, length, count):
+    listPoint = []
+    step = 360 / count
+    angle_i = angle
+    for i in range(count):
+        v = sd.get_vector(startPoint, angle_i, length)
+        angle_i += step
+        listPoint.append(v.end_point)
+        if i > 0:
+            sd.line(listPoint[i-1],listPoint[i], width=3)
+    sd.line(listPoint[0], listPoint[-1], width=3)
+
+
 point = sd.get_point(150,150)
 point2 = sd.get_point(150,450)
 point3 = sd.get_point(400,450)
@@ -87,10 +100,14 @@ point4 = sd.get_point(400,150)
 angle = 10
 length = 60
 
-treag(point, angle, length)
-square(point2, angle, length)
-penta(point3, angle, length)
-hexa(point4, angle, length)
+#treag(point, angle, length)
+#square(point2, angle, length)
+#penta(point3, angle, length)
+#hexa(point4, angle, length)
+draw_fig(point, angle, length, 3)
+draw_fig(point2, angle, length, 4)
+draw_fig(point3, angle, length, 5)
+draw_fig(point4, angle, length, 6)
 
 # Часть 1-бис.
 # Попробуйте прикинуть обьем работы, если нужно будет внести изменения в этот код.
