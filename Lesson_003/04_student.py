@@ -10,5 +10,9 @@
 #   Студенту надо попросить ХХХ.ХХ рублей
 
 educational_grant, expenses = 10000, 12000
-
+rp = 0
 # TODO здесь ваш код
+for x in range(1,11):
+    expenses = expenses+rp
+    rp = expenses*3/100
+    print(f"{x} месяц: {expenses-educational_grant:.2f} рублей")

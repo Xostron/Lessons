@@ -47,9 +47,22 @@ store = {
 #     вывод на консоль количества и стоимости товара на складе
 
 # TODO здесь ваш код
+for name, articule in goods.items():
+    quantity = 0
+    summary = 0
+    listing = store[articule]
+    for x in listing:
+        quantity += x['quantity']
+        summary += x['quantity']*x['price']
+    print(f"{name} - Количество на складе {quantity}, Общая стоимость {summary}")
 
+print("Извлекаем только ключи словаря")
+for name in goods.keys():
+    print(name)
 
-
+print("Извлекаем только значения словаря")
+for name in goods.values():
+    print(name)
 
 
 
