@@ -44,3 +44,18 @@
 # Точнее, в этом случае важен принцип единственной ответственности - https://goo.gl/rYb3hT
 
 # TODO здесь ваш код...
+import mind_hunter as mh
+restart = 0
+while True:
+    if restart == 0:
+        restart = 1
+        thinkNumb = mh.thinkNumber()
+    myNumb = input('Введите предполагаемое число: ')
+    inNumb = mh.compareNumber(myNumb)
+    if inNumb['bull'] == 4:
+        print('Вы отгадали число!')
+        print('Загаданное число: ', thinkNumb)
+        restart = 0
+    else:
+        print('овторите еще раз', inNumb)
+
