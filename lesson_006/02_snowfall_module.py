@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import simple_draw as sd
-
+import snowfall as sf
+from random import randint
 # На основе кода из lesson_004/05_snowfall.py
 # сделать модуль snowfall.py в котором реализовать следующие функции
 #  создать_снежинки(N) - создает N снежинок
@@ -14,6 +15,8 @@ import simple_draw as sd
 # обращаясь ТОЛЬКО к функциям модуля snowfall
 
 # создать_снежинки(N)
+
+snows = sf.plentySnow()
 while True:
     #  нарисовать_снежинки_цветом(color=sd.background_color)
     #  сдвинуть_снежинки()
@@ -21,8 +24,14 @@ while True:
     #  если есть номера_достигших_низа_экрана() то
     #       удалить_снежинки(номера)
     #       создать_снежинки(count)
-    sd.sleep(0.1)
+    #sd.clear_screen()
+    for snow in snows:
+        if not sf.falldown(snow):
+            snow = sf.moveSnow(snow, speedX = randint(-5, 5), speedY = randint(-2,-1))
+        else:
+            sf.deleteSnow(snow)
+    sd.sleep(0.05)
     if sd.user_want_exit():
         break
-
+#test 21_05_21
 sd.pause()
