@@ -50,6 +50,7 @@ while True:
     if restart == 0:
         restart = 1
         thinkNumb = mh.thinkNumber()
+        print(thinkNumb)
     myNumb = input('Введите предполагаемое число: ')
     inNumb = mh.compareNumber(myNumb)
     if inNumb['bull'] == 4:
