@@ -38,6 +38,7 @@ class Man:
     def watch_MTV(self):
         cprint('{} смотрел MTV целый день'.format(self.name), color='green')
         self.fullness -= 10
+        self.house.whore = 3
 
     def shopping(self):
         if self.house.money >= 50:
@@ -76,10 +77,11 @@ class House:
     def __init__(self):
         self.food = 50
         self.money = 0
+        self.whore = 4
 
     def __str__(self):
-        return 'В доме еды осталось {}, денег осталось {}'.format(
-            self.food, self.money)
+        return 'В доме еды осталось {}, денег осталось {}, интертеймент {}'.format(
+            self.food, self.money, self.whore)
 
 
 citizens = [
