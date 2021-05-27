@@ -6,8 +6,9 @@
 class Parent:
     class_var_1 = 12
     _class_var_2 = 23
-    __class_var_3 = 34
-
+    __class_var_3 = 34 # сокрытие атрибута для наследуемых объектов (инкапсуляция)
+    __xost = 101 # сокрытие атрибута для наследуемых объектов (инкапсуляция)
+    ___ret = 102 # сокрытие атрибута для наследуемых объектов (инкапсуляция)
     def __init__(self):
         self.var_1 = 45
         self._var_2 = 56
@@ -30,7 +31,7 @@ class Child(Parent):
         # print(self.__class_var_3)
         print(self.var_1)
         print(self._var_2)
-        # print(self.__var_3)
+        # print(self.___ret)
 
 
 obj = Child()
