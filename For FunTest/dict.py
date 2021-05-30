@@ -45,7 +45,7 @@ else:
 print(t)
 
 for key in d:
-    print(key, d[key])
+    print(key, d[key], "==================")
 
 # Methods
 # full clear dictionary
