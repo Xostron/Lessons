@@ -11,7 +11,33 @@ E
 
 https://www.codingame.com/ide/puzzle/ascii-art
 
+TOP 1
 
+l = int(input())
+h = int(input())
+t = input()
+row = [input() for i in range(h)]
+
+for j in range(h):
+    for i in t:
+        asc=(ord(i.upper())-65) if i.isalpha() else 26
+        print(row[j][(l*asc):(l*(asc+1))],end='')
+    print()
+
+TOP 2
+l = int(input())
+h = int(input())
+t = input()
+alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ?"
+for i in range(h):
+    row = input()
+    s = ""
+    for c in t.upper():
+        if c not in alphabet:
+            c = '?'
+        i = alphabet.index(c)
+        s += row[i*(l):(i+1)*(l)]
+    print(s)
 
 """
 # TODO function to convert input data (A..Z?) to dictionary {"A": ([x,x,x,x],[x,x,x,x],[x,x,x,x],[x,x,x,x],[x,x,x,x])}
@@ -43,7 +69,6 @@ def rawToDict(width_symbol, height_symbol, dataList):
             dictionary[f'{chr(key)}'] = shortList
     return dictionary
 
-
 def printDict(string): # печать по одному символу с новой строки
     dataStr = string.upper()
     for symbol in dataStr:
@@ -54,61 +79,46 @@ def printDict(string): # печать по одному символу с нов
             for i in dictionary['?']:
                 print(''.join(i))
 
-def printString(string, hs):
-    dataStr = string.upper()
-    string_dict = []
+def printString(string, height_symbol, dict):
+    dictionary = dict.copy()
+    inputStr = string.upper()
+    stringOfdict = []
     j = 0
-    while j != hs:
-        for symbol in dataStr:
+    while j != height_symbol:
+        for symbol in inputStr:
             if symbol in dictionary.keys():
-                string_dict.append(dictionary[symbol][j])
+                stringOfdict.append(dictionary[symbol][j])
+            else:
+                stringOfdict.append(dictionary["?"][j])
         j += 1
-    #print(string_dict, len(string_dict), len(string_dict[0]))
-
-
-    step = len(dataStr)
+    step = len(inputStr)
     start = 0
     end = step
     a = []
     b = ''
-    # #print(string_dict[start:end])
-    for i in range(hs):
-        for j in string_dict[start:end]:
+    for i in range(height_symbol):
+        for j in stringOfdict[start:end]:
             a = j
             b = b + ''.join(a)
-
         print(b)
-        #print(string_dict[start:end])
         start = end
         end = start+step
-        a = []
         b = ''
-    #for i in range(hs):
-    #print(string_dict[start:end], len(string_dict[start:end]))
-    #print(''.join(string_dict[start:end]))
 
 
 dictionary = {}
 width_symbol = int(input())
-height_symbol = hs = int(input())
-symbol = input()
+height_symbol = hs_i = int(input())
+symbols = input()
 graphicsList = []
 
-while height_symbol > 0:
+while hs_i > 0:
     graphicsList.append([i for i in input()])
-    height_symbol -= 1
-
-print(graphicsList)
-print(len(graphicsList[0]))
-print(len(graphicsList[1]))
-print(len(graphicsList[2]))
-print(len(graphicsList[3]))
-print(len(graphicsList[4]))
-
-dictionary = rawToDict(width_symbol, hs, graphicsList)
+    hs_i -= 1
 
 
-printString('ZZ', 5)
+dictionary = rawToDict(width_symbol, height_symbol, graphicsList)
+printString(symbols, height_symbol = height_symbol, dict = dictionary)
 
 
 
