@@ -47,53 +47,57 @@ def detFormula(formula):
     equ = 0
     print(list(enumerate(formula)))
     for symbol in enumerate(formula):
+
         if openSqr > 0 and indexIn != -1:
             if symbol[1] == '[':
-                print(f"find openSqr {openSqr}")
+                print(f"1find openSqr {openSqr}")
                 openSqr += 1
             if symbol[1] == ']':
-                print(f"find openSqr {openSqr}")
+                print(f"2find openSqr {openSqr}")
                 openSqr -= 1
             if openSqr == 0:
-                print(f"find indexOut {indexOut}")
                 indexOut = symbol[0]
                 lastSymbol = ']'
-
-        if openSqr == 0 and openCrl == 0 and indexIn == -1:
-            if symbol[1] == '[':
-                print(f"find openSqr {openSqr}")
-                openSqr += 1
-                indexIn = symbol[0]
-            if symbol[1] == '(':
-                print(f"find openCrl {openCrl}")
-                openCrl += 1
-                indexIn = symbol[0]
-
+                print(f"find indexOut Sqr {indexOut}")
         if openCrl > 0 and indexIn != -1:
             if symbol[1] == '(':
                 openCrl += 1
+                print("1find openCrl")
             if symbol[1] == ')':
                 openCrl -= 1
+                print('2find openCrl')
             if openCrl == 0:
                 indexOut = symbol[0]
                 lastSymbol = ')'
+                print('3find indexOut Crl')
+        if openSqr == 0 and openCrl == 0 and indexIn == -1:
+            if symbol[1] == '[':
+                print(f"3find openSqr {openSqr}")
+                openSqr += 1
+                indexIn = symbol[0]
+            if symbol[1] == '(':
+                print(f"4find openCrl {openCrl}")
+                openCrl += 1
+                indexIn = symbol[0]
+
+
 
         if indexIn != -1 and indexOut != -1:
             print('%%%%%%%%%%%%%%%%%%%')
             computeList = formula[indexIn + 1:indexOut]
             if len(computeList) == 2:
-            if lastSymbol == ']':
-                equ = 0
-                for i in computeList:
-                    equ += 1 / (dictionary[i])
-                    print(f"*****{dictionary[i]}")
-                equ = 1 / equ
-            elif lastSymbol == ')':
-                equ = 0
-                for i in computeList:
-                    equ += dictionary[i]
-                    print(f"*****{dictionary[i]}")
-            print(f"OUT: {computeList} "
+                if lastSymbol == ']':
+                    equ = 0
+                    for i in computeList:
+                        equ += 1 / (dictionary[i])
+                        print(f"*****{dictionary[i]}")
+                    equ = 1 / equ
+                elif lastSymbol == ')':
+                    equ = 0
+                    for i in computeList:
+                        equ += dictionary[i]
+                        print(f"*****{dictionary[i]}")
+                print(f"OUT: {computeList} "
                   f"Result = {equ} "
                   f"LastSymbol = {lastSymbol} ")
     return [indexIn, indexOut, equ]
