@@ -89,7 +89,7 @@ citizens = [
     Man(name='Батхед'),
     Man(name='Кенни'),
 ]
-
+print(type(citizens[0]))
 
 my_sweet_home = House()
 for citisen in citizens:
