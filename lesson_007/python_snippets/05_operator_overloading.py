@@ -151,7 +151,7 @@ class Sandwich:
 borodinsky = Bread()
 salami = Sausage()
 result = borodinsky + salami
-print(result)
+print(result, '---------')
 
 
 # эмуляция вызова функции - это когда объект ведет себя как функция

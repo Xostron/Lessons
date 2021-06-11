@@ -18,6 +18,29 @@
 #
 # Входные параметры: файл для анализа, файл результата
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
+class NOK:
+    def __init__(self, inFile, outFile ):
+        self.inFile = inFile
+        self.outFile = outFile
+        pass
+
+    def collect(self):
+        self.collection = []
+        self.all = 0
+        with open(self.inFile, 'r') as file:
+            for line in file:
+                self.all += 1
+                if 'NOK' in line:
+                    self.collection.append(line)
+        #print(self.collection)
+
+    def out(self):
+        self.count = 0
+        with open(self.outFile, 'w') as file:
+            for line in self.collection:
+                file.write(line)
+                self.count += 1
+            file.write(f'Result {self.count} NOK from all values = {self.all}')
 
 # TODO здесь ваш код
 
@@ -26,3 +49,11 @@
 #  - по месяцу
 #  - по году
 # Для этого пригодится шаблон проектирование "Шаблонный метод" см https://goo.gl/Vz4828
+
+
+inPath = 'events.txt'
+outPath = 'outData.txt'
+
+nok = NOK(inPath, outPath)
+nok.collect()
+nok.out()
