@@ -19,7 +19,7 @@ os.path.normpath(path)
 os.path.getsize(path)
 
 # Получить дату модификации файла.
-os.path.getmtime(path)
+secs = os.path.getmtime(path)
 
 # вернет кол-во секунд с начала эпохи. преобразовать в года/месяца можно так
 import time

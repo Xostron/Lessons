@@ -17,7 +17,7 @@ from pprint import pprint
 file_name = 'byron.txt'
 # file_name = 'pushkin.txt'
 file = open(file_name, mode='r', encoding='utf8')
-print(file.tell())
+print('1)',file.tell())
 
 print('читаем 100 символов')
 file_content = file.read(100)  # в символах
@@ -44,7 +44,7 @@ new_position = file.seek(0, io.SEEK_SET)
 # io.SEEK_END - конец файла
 
 file_content = file.read(100)  # в символах
-print(file_content)
+print('=======',file_content)
 
 file.close()
 # аналогично для записи
