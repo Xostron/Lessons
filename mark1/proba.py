@@ -1,8 +1,9 @@
-from googletrans import Translator
+import requests, json
 
-translator = Translator()
-result = translator.translate('Mikä on nimesi', src='fi', dest='fr')
 
-print(result.src)
-print(result.dest)
-print(result.text)
+data = {'source': 'ленточный конвейер'}
+s = requests.get(r'https://fasttranslator.herokuapp.com/api/v1/detect', params=data)
+
+data = s.json()
+
+print(data['Lang'])
