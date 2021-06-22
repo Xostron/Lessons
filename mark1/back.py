@@ -1,9 +1,11 @@
-import time
+import time, requests, json
 
+API_KEY = 'N2Q1MWFjM2ItZWQzMi00Mjk0LWEyZDQtYTY5YmNmZjgzYzVkOjA2MTEwNmJlN2U2YTRmOWFhYjg0MjBlNDlhM2UyZjI2'
+URL_AUTH = 'https://developers.lingvolive.com/api/v1.1/authenticate'
 unnecessary = ("the", "and", "was", "were", "not", 'did', 'will', 'had', 'have', 'has',
                'all', 'that', 'this', 'with', 'for', 'from', 'are', 'she', 'they', 'his',
                'then', 'than', 'york',)
-
+URL_TRANS = 'https://developers.lingvolive.com/api/v1/Minicard'
 
 class Collect:
     def __init__(self):
@@ -34,11 +36,54 @@ class Collect:
         return self.resultTop
 
 
-mark = Collect()
+class Translate:
+
+    def __init__(self, url, key):
+        pass
+        self.API_KEY = key
+        self.URL_AUTH = url
+        self.headers = {
+            'Authorization':'Basic '+ self.API_KEY
+        }
+        self.auth()
+
+    def auth(self):
+        token_auth = requests.post(url=self.URL_AUTH, headers=self.headers)
+        self.token_status = token_auth.status_code
+        if self.token_status == 200:
+            self.token = token_auth.text
+            print('Token есть можно поесть')
+
+
+    def translate(self, url, word):
+        if self.token_status == 200:
+            print('wait')
+            header = {'Authorization': 'Bearer ' + self.token}
+            params = {
+                'text': word,
+                'srcLang': 1033,
+                'dstLang': 1049
+            }
+            self.order = requests.get(url=url, headers=header, params=params)
+            self.result = self.order.json()
+            try:
+                self.trans_word = self.result['Translation']['Translation']
+                #print(self.result)
+                print('wait1')
+            except:
+                self.trans_word = 'Не найден вариант перевода'
+                #print(self.result)
+                print('wait2')
+        else:
+            self.trans_word = 'Сервер не отвечает'
+            print('wait3')
+
+
+book = Collect()
 file_name = input("ведите путь книги: \n")
 started_at = time.time()  # ====================
 try:
-    result = mark.collections(file_name)
+    result = book.collections(file_name)
 except FileNotFoundError:
     result = []
 ended_at = time.time()  # ====================
@@ -46,4 +91,15 @@ elapsed = round(ended_at - started_at, 6)  # ====================
 print(result[:100])
 print(elapsed)
 
+trans = Translate(URL_AUTH, API_KEY)
 
+dfg = 'RESULT_v0001.txt'
+with open(dfg, 'w', encoding='cp1251') as file:
+    print('создаем файл перевода')
+    for word in enumerate(result[31:100]):
+        trans.translate(url=URL_TRANS, word=word[1])
+        my_string = f'{word[0]+1}) {word[1]}              ' \
+                    f'{trans.trans_word}    \n'
+        file.write(my_string)
+
+print('Я сделяль!!!')

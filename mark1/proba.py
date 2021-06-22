@@ -35,21 +35,32 @@ class Translate:
 
     def auth(self):
         token_auth = requests.post(url=self.URL_AUTH, headers=self.headers)
-        self.token = token_auth.text
         self.token_status = token_auth.status_code
+        if self.token_status == 200:
+            self.token = token_auth.text
+
 
     def translate(self, url, word):
-        header = {'Authorization': 'Bearer ' + self.token}
-        params = {
-            'text': word,
-            'srcLang': 1033,
-            'dstLang': 1049
-        }
-        self.order = requests.get(url=url, headers=header, params=params)
-        self.result = self.order.json()
-        self.trans_word = self.result['Translation']['Translation']
-
+        if self.token_status == 200:
+            header = {'Authorization': 'Bearer ' + self.token}
+            params = {
+                'text': word,
+                'srcLang': 1033,
+                'dstLang': 1049
+            }
+            self.order = requests.get(url=url, headers=header, params=params)
+            self.result = self.order.json()
+            try:
+                self.trans_word = self.result['Translation']['Translation']
+                #print(self.result)
+            except:
+                self.trans_word = 'Не найден вариант перевода'
+                #print(self.result)
+        else:
+            self.trans_word = 'Сервер не отвечает'
 
 t = Translate(URL_AUTH, API_KEY)
-t.translate(url, 'Happy')
-print(t.trans_word)
+while True:
+    word = input()
+    t.translate(url, word)
+    print(t.trans_word)
