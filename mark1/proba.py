@@ -1,66 +1,39 @@
-import requests, json
+from kivy.config import Config
+from kivy.app import App
+from kivy.uix.button import Button
 
-API_KEY = 'N2Q1MWFjM2ItZWQzMi00Mjk0LWEyZDQtYTY5YmNmZjgzYzVkOjA2MTEwNmJlN2U2YTRmOWFhYjg0MjBlNDlhM2UyZjI2'
-URL_AUTH = 'https://developers.lingvolive.com/api/v1.1/authenticate'
-# headers_auth = {'Authorization': 'Basic ' + API_KEY}
-#
-# token_auth = requests.post(url=URL_AUTHENTICATE, headers=headers_auth)
-# token = token_auth.text
-#
-# print(token_auth.status_code)
-# print(token)
-#
-url = 'https://developers.lingvolive.com/api/v1/Minicard'
-# params = {
-#     'text': 'always',
-#     'srcLang': 1033,
-#     'dstLang': 1049
-# }
-# head = {'Authorization': 'Bearer ' + token}
-# s = requests.get(url=url, headers=head, params=params)
-# res = s.json()
-# print(res['Translation']['Translation'])
+Config.set('graphics', 'resizable', '0')
+Config.set('graphics', 'width', '640')
+Config.set('graphics', 'height', '480')
+
+from kivy.uix.codeinput import CodeInput
+from pygments.lexers.html import HtmlLexer
 
 
-class Translate:
-
-    def __init__(self, url, key):
-        pass
-        self.API_KEY = key
-        self.URL_AUTH = url
-        self.headers = {
-            'Authorization':'Basic '+ self.API_KEY
-        }
-        self.auth()
-
-    def auth(self):
-        token_auth = requests.post(url=self.URL_AUTH, headers=self.headers)
-        self.token_status = token_auth.status_code
-        if self.token_status == 200:
-            self.token = token_auth.text
 
 
-    def translate(self, url, word):
-        if self.token_status == 200:
-            header = {'Authorization': 'Bearer ' + self.token}
-            params = {
-                'text': word,
-                'srcLang': 1033,
-                'dstLang': 1049
-            }
-            self.order = requests.get(url=url, headers=header, params=params)
-            self.result = self.order.json()
-            try:
-                self.trans_word = self.result['Translation']['Translation']
-                #print(self.result)
-            except:
-                self.trans_word = 'Не найден вариант перевода'
-                #print(self.result)
-        else:
-            self.trans_word = 'Сервер не отвечает'
 
-t = Translate(URL_AUTH, API_KEY)
-while True:
-    word = input()
-    t.translate(url, word)
-    print(t.trans_word)
+from kivy.uix.floatlayout import FloatLayout
+
+
+class myApp(App):
+
+    def build(self):
+        f1 = FloatLayout(size=(10, 10))
+        f1.add_widget(Button(text='I am Button',
+                             font_size=18,
+                             on_press=self.btn_press,
+                             background_color=[.32, .85, .94, 1],
+                             background_normal='',
+                             size_hint=(.25, .15),
+                             pos=(640/2-640*0.25/2, 480/2-480*0.15/2)))
+        return f1
+
+    def btn_press(self, instance):
+        print('кнопка нажата')
+        instance.text = 'I have already pressed'
+        instance.font_size=15
+
+
+if __name__ == '__main__':
+    myApp().run()
