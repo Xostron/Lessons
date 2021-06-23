@@ -4,7 +4,7 @@ API_KEY = 'N2Q1MWFjM2ItZWQzMi00Mjk0LWEyZDQtYTY5YmNmZjgzYzVkOjA2MTEwNmJlN2U2YTRmO
 URL_AUTH = 'https://developers.lingvolive.com/api/v1.1/authenticate'
 unnecessary = ("the", "and", "was", "were", "not", 'did', 'will', 'had', 'have', 'has',
                'all', 'that', 'this', 'with', 'for', 'from', 'are', 'she', 'they', 'his',
-               'then', 'than', 'york',)
+               'then', 'than', 'york', 'crusoe', 'robinson')
 URL_TRANS = 'https://developers.lingvolive.com/api/v1/Minicard'
 
 class Collect:
@@ -69,37 +69,40 @@ class Translate:
             try:
                 self.trans_word = self.result['Translation']['Translation']
                 #print(self.result)
-                print('wait1')
+                print('перевод - ОК')
             except:
                 self.trans_word = 'Не найден вариант перевода'
                 #print(self.result)
-                print('wait2')
+                print('перевод - NOK')
         else:
-            self.trans_word = 'Сервер не отвечает'
-            print('wait3')
+            self.trans_word = '=== Сервер не отвечает ==='
+            print('=== No access ===')
 
 
 book = Collect()
 file_name = input("ведите путь книги: \n")
-started_at = time.time()  # ====================
+
 try:
     result = book.collections(file_name)
 except FileNotFoundError:
     result = []
-ended_at = time.time()  # ====================
-elapsed = round(ended_at - started_at, 6)  # ====================
+
 print(result[:100])
-print(elapsed)
+
 
 trans = Translate(URL_AUTH, API_KEY)
 
-dfg = 'RESULT_v0001.txt'
-with open(dfg, 'w', encoding='cp1251') as file:
+myFile = input('Введите новое имя файла (*****.txt)')
+with open(myFile, 'w', encoding='cp1251') as file:
     print('создаем файл перевода')
-    for word in enumerate(result[31:100]):
+    for word in enumerate(result[:100]):
+        started_at = time.time()  # ====================
         trans.translate(url=URL_TRANS, word=word[1])
+        time.sleep(0.6)
         my_string = f'{word[0]+1}) {word[1]}              ' \
                     f'{trans.trans_word}    \n'
         file.write(my_string)
-
-print('Я сделяль!!!')
+        ended_at = time.time()  # ====================
+        elapsed = round(ended_at - started_at, 6)  # ====================
+        print(elapsed)
+print('============== Done ==============')
