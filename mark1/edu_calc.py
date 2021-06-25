@@ -9,7 +9,7 @@ Config.set('graphics', 'resizable', 0)
 Config.set('graphics', 'width', 340)
 Config.set('graphics', 'height', 470)
 
-class Calculator(App):
+class Calc(App):
     def upd_lbl(self):
         self.lb1.text = self.formula
 
@@ -66,4 +66,4 @@ class Calculator(App):
         return box
 
 if __name__ == '__main__':
-    main = Calculator().run()
+    main = Calc().run()
