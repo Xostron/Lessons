@@ -1,14 +1,18 @@
 from kivy.core.audio import SoundLoader
 from kivy.app import App
+from kivy.uix.carousel import Carousel
+from kivy.uix.image import AsyncImage, Image
+from kivy.uix.label import Label
 
+class CarouselApp(App):
 
-class mus(App):
     def build(self):
-        sound = SoundLoader.load('saib. - Shanghai Nights.mp3')
-        if sound:
-            print("Sound found at %s" % sound.source)
-            print("Sound is %.3f seconds" % sound.length)
-            sound.play()
-        return None
+        carousel = Carousel(direction='right')
+        image = Image(source="0.gif")
+        carousel.add_widget(image)
 
-mus().run()
+        return carousel
+
+
+
+CarouselApp().run()
