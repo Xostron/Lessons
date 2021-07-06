@@ -36,10 +36,7 @@ page = ['У каждого человека свои звезды.\n '
 
 class CarouselApp(App):
     def myChange(self, instance, value):
-        #print(self.carousel.scroll_distance)
-        #print(self.carousel.canvas)
-        self.get_right()
-        print(self.right)
+        print(self.carousel.index)
         pass
 
 
@@ -49,7 +46,7 @@ class CarouselApp(App):
 
         self.carousel = Carousel(direction='right')
         self.carousel.bind(on_touch_move=self.myChange)
-        self.carousel.scroll_distance = 10
+        self.carousel.scroll_distance = 1
         self.carousel.scroll_timeout = 999
         #self.carousel.
 

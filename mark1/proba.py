@@ -1,39 +1,29 @@
-from kivy.config import Config
-from kivy.app import App
-from kivy.uix.button import Button
-
-Config.set('graphics', 'resizable', '0')
-Config.set('graphics', 'width', '640')
-Config.set('graphics', 'height', '480')
-
-from kivy.uix.codeinput import CodeInput
-from pygments.lexers.html import HtmlLexer
+import requests, json
 
 
+# data = {'source': 'ленточный конвейер'}
+# s = requests.get(r'https://fasttranslator.herokuapp.com/api/v1/detect', params=data)
+# data = s.json()
+# print(data['Lang'])
+#
+#
+#
+# url_post = 'https://fasttranslator.herokuapp.com/api/v1/text/to/text'
+# data_post = {
+#     'source': 'allure',
+#     'lang': 'en-ru'
+# }
+# r = requests.post(url=url_post, data=data_post)
+#
+# out = r.json()
+# print(out)
 
 
+# u = 'https://translate.yandex.ru/?utm_source=wizard&lang=ru-en&text=привет'
+# https://translate.yandex.ru/?utm_source=wizard&lang=ru-en
+# https://translate.yandex.ru/?utm_source=wizard&lang=ru-en
+# &text=привет%20меня%20зовут
+u1 = 'https://translate.yandex.ru/?utm_source=wizard&lang=ru-en&text=привет%20меня%20зовут'
+s = requests.get(u1)
+print(s.text.encode('utf-8'))
 
-from kivy.uix.floatlayout import FloatLayout
-
-
-class myApp(App):
-
-    def build(self):
-        f1 = FloatLayout(size=(10, 10))
-        f1.add_widget(Button(text='I am Button',
-                             font_size=18,
-                             on_press=self.btn_press,
-                             background_color=[.32, .85, .94, 1],
-                             background_normal='',
-                             size_hint=(.25, .15),
-                             pos=(640/2-640*0.25/2, 480/2-480*0.15/2)))
-        return f1
-
-    def btn_press(self, instance):
-        print('кнопка нажата')
-        instance.text = 'I have already pressed'
-        instance.font_size=15
-
-
-if __name__ == '__main__':
-    myApp().run()
