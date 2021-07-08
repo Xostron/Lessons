@@ -1,0 +1,102 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import colors kivymd.color_definitions.colors
+#:import effect kivy.uix.effectwidget.EffectWidget
+#:import HorizontalBlurEffect kivy.uix.effectwidget.HorizontalBlurEffect
+#:import VerticalBlurEffect kivy.uix.effectwidget.VerticalBlurEffect
+#:import STANDARD_INCREMENT kivymd.material_resources.STANDARD_INCREMENT
+#:import IconLeftWidget kivymd.uix.list.IconLeftWidget
+#:import MDLabel kivymd.uix.label.MDLabel
+
+<ItemList@TwoLineAvatarListItem>
+    icon: ""
+    font_style: "Caption"
+    secondary_font_style: "Caption"
+    height: STANDARD_INCREMENT
+
+    IconLeftWidget:
+        icon: root.icon
+
+
+<CallScreen>
+    EffectWidget:
+        effects:
+            # blur_value значение степени размытия.
+            (\
+            HorizontalBlurEffect(size=root.blur_value), \
+            VerticalBlurEffect(size=root.blur_value), \
+            )
+        FitImage:
+            id: title_image
+            size_hint_y: .45
+            y: root.height - self.height
+            source: "data/images/avatar.jpg"
+
+    MDToolbar:
+        y: root.height - self.height - dp(20)
+        md_bg_color: 1, 0, 0, 0
+        opposite_colors: True
+        title: "Profile"
+        left_action_items:  [["menu", lambda x: x]]
+        right_action_items: [["dots-vertical", lambda x: x]]
+
+    MDFloatLayout:
+        id: round_avatar
+        size_hint: None, None
+        size: "105dp", "105dp"
+        md_bg_color: 1, 1, 1, 1
+        radius: [self.height / 2,]
+        y: root.height * 45 / 100 + self.height
+        x: root.center_x - (self.width + user_name.width + dp(20)) / 2
+
+        FitImage:
+            size_hint: None, None
+            size: "100dp", "100dp"
+            mipmap: True
+            source: "data/images/11.jpg"
+            radius: [self.height / 2,]
+            pos_hint: {"center_x": .5, "center_y": .5}
+            mipmap: True
+
+    MDLabel:
+        id: user_name
+        text: "S. Glazkov"
+        font_style: "H3"
+        bold: True
+        size_hint: None, None
+        -text_size: None, None
+        size: self.texture_size
+        theme_text_color: "Custom"
+        text_color: 1, 1, 1, 1
+        y: round_avatar.y + self.height / 2
+        x: round_avatar.x + round_avatar.width + dp(20)
+
+    MDBoxLayout:
+        id: list_box
+        orientation: "vertical"
+        adaptive_height: True
+        y: root.height * 45 / 100 - self.height / 2
+
+        ItemList:
+            icon: "phone"
+            text: "Phone"
+            secondary_text: "123 456 789"
+
+        ItemList:
+            icon: "mail"
+            text: "Email"
+            secondary_text: "kivydevelopment@gmail.com"
+
+    MDFloatingActionButton:
+
+        id: call_button
+        icon: "phone"
+        x: root.width - self.width - dp(20)
+        y: root.height * 45 / 100 + self.height / 2
+        md_bg_color: get_color_from_hex(colors["Green"]["A700"])
+        on_release:
+            root.animation_title_image(title_image)
+            root.animation_call_button(self)
+            root.animation_list_box(list_box)
+            root.animation_round_avatar(round_avatar, user_name)
+            root.animation_user_name(round_avatar, user_name)
+
