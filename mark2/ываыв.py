@@ -46,12 +46,13 @@ class CarouselApp(App):
 
     def build(self):
         global page
-
+        self.window = FloatLayout()
         self.carousel = Carousel(direction='right')
         self.carousel.bind(on_touch_move=self.myChange)
         self.carousel.scroll_distance = 1
         self.carousel.scroll_timeout = 999
         self.layout = []
+        # carousel
         for i in range(10):
             self.layout.append(FloatLayout(size_hint=(1,.55),
                                            pos_hint={'x':0, 'y':.4}))
@@ -68,8 +69,25 @@ class CarouselApp(App):
             self.layout[i].add_widget(self.myText)
             self.carousel.add_widget(self.layout[i])
 
-        return self.carousel
+        # window
+        self.btn_next = Button(text='Далее',
+                               size_hint=(.455,.08),
+                               pos_hint={'center_x':.745, 'center_y': .1},
+                               on_release=self.evt_btn_next)
+        self.btn_pre = Button(text='Назад',
+                               size_hint=(.455,.08),
+                               pos_hint={'center_x': .255, 'center_y': .1},
+                              on_release=self.evt_btn_pre)
+        self.window.add_widget(self.carousel)
+        self.window.add_widget(self.btn_pre)
+        self.window.add_widget(self.btn_next)
+        return self.window
 
+    def evt_btn_next(self, instance):
+        self.carousel.load_next(mode='next')
+
+    def evt_btn_pre(self, instance):
+        self.carousel.load_previous()
 
 # sound = SoundLoader.load('saib. - Shanghai Nights.mp3')
 # if sound:
