@@ -1,0 +1,84 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import colors kivymd.color_definitions.colors
+#:import effect kivy.uix.effectwidget.EffectWidget
+#:import HorizontalBlurEffect kivy.uix.effectwidget.HorizontalBlurEffect
+#:import VerticalBlurEffect kivy.uix.effectwidget.VerticalBlurEffect
+#:import STANDARD_INCREMENT kivymd.material_resources.STANDARD_INCREMENT
+#:import IconLeftWidget kivymd.uix.list.IconLeftWidget
+#:import MDLabel kivymd.uix.label.MDLabel
+#:import Config kivy.config.Config
+
+
+#"""Сборка основного экрана"""
+<CallBoxButton@MDBoxLayout>
+    orientation: "vertical"
+    adaptive_size: True
+    spacing: "8dp"
+    source: ""
+    text: ""
+
+    MDFloatLayout:
+        id: round_avatar
+        size_hint: None, None
+        size: "105dp", "105dp"
+        md_bg_color: 1, 1, 1, 1
+        radius: [self.height / 2,]
+        y: root.height * 45 / 100 + self.height
+        x: root.center_x - (self.width + name_book.width + dp(20)) / 2
+
+    FitImage:
+        size_hint: None, None
+        size: "100dp", "100dp"
+        mipmap: True
+        source: root.source
+        radius: [self.height / 2,]
+        pos_hint: {"center_x": .5, "center_y": .5}
+        mipmap: True
+
+    MDLabel:
+        id: name_book
+        text: root.text
+        size_hint_y: None
+        height: self.texture_size[1]
+        font_size: 18
+        font_style: "Caption"
+        halign: "center"
+        theme_text_color: "Custom"
+        text_color: 1, 1, 1, 1
+
+<CallBox@MDGridLayout>
+    cols: 3
+    rows: 2
+    adaptive_size: True
+    spacing: "24dp"
+
+    CallBoxButton:
+        source: "data/images/1.jpg"
+        text: "Mute"
+    CallBoxButton:
+        source: "data/images/1.jpg"
+        text: "Speaker"
+    CallBoxButton:
+        source: "data/images/1.jpg"
+        text: "Keypad"
+
+    CallBoxButton:
+        source: "data/images/1.jpg"
+        text: "Add call"
+    CallBoxButton:
+        source: "data/images/1.jpg"
+        text: "Transfer"
+    CallBoxButton:
+        source: "data/images/1.jpg"
+        text: "Contact"
+
+
+
+
+
+<CallScreen>
+    CallBox:
+        id: call_box
+        pos_hint: {"center_x": .5}
+        y: 0
+        opacity: 1
