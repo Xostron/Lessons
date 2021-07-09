@@ -6,7 +6,72 @@
 #:import STANDARD_INCREMENT kivymd.material_resources.STANDARD_INCREMENT
 #:import IconLeftWidget kivymd.uix.list.IconLeftWidget
 #:import MDLabel kivymd.uix.label.MDLabel
+#:import Config kivy.config.Config
 
+#"""бокс с 6 кнопочками - описание макета 1 кнопки-иконки"""
+<CallBoxButton@MDBoxLayout>
+    orientation: "vertical"
+    adaptive_size: True
+    spacing: "8dp"
+    icon: ""
+    text: ""
+
+    MDIconButton:
+        icon: root.icon
+        theme_text_color: "Custom"
+        text_color: 1, 1, 1, 1
+
+        canvas:
+            Color:
+                rgba: 1, 1, 1, 1
+            Line:
+                width: 1
+                circle:
+                    (\
+                    self.center_x, \
+                    self.center_y, \
+                    min(self.width, self.height) / 2, \
+                    0, \
+                    360, \
+                    )
+
+    MDLabel:
+        text: root.text
+        size_hint_y: None
+        height: self.texture_size[1]
+        font_style: "Caption"
+        halign: "center"
+        theme_text_color: "Custom"
+        text_color: 1, 1, 1, 1
+
+#"""бокс с 6 кнопочками - конфигурация"""
+<CallBox@MDGridLayout>
+    cols: 3
+    rows: 2
+    adaptive_size: True
+    spacing: "24dp"
+
+    CallBoxButton:
+        icon: "microphone-off"
+        text: "Mute"
+    CallBoxButton:
+        icon: "volume-high"
+        text: "Speaker"
+    CallBoxButton:
+        icon: "dialpad"
+        text: "Keypad"
+
+    CallBoxButton:
+        icon: "plus-circle"
+        text: "Add call"
+    CallBoxButton:
+        icon: "call-missed"
+        text: "Transfer"
+    CallBoxButton:
+        icon: "account"
+        text: "Contact"
+
+#"""поле вывода: телефонб почта - описание"""
 <ItemList@TwoLineAvatarListItem>
     icon: ""
     font_style: "Caption"
@@ -16,8 +81,13 @@
     IconLeftWidget:
         icon: root.icon
 
-
+#"""Сборка основного экрана"""
 <CallScreen>
+# Титульник:
+# FitImage - автоматически растягивается на все выделенное ему
+# пространство с сохранением пропорций изображения:
+# effects - эффект размытия
+
     EffectWidget:
         effects:
             # blur_value значение степени размытия.
@@ -31,14 +101,17 @@
             y: root.height - self.height
             source: "data/images/avatar.jpg"
 
+# панель меню
     MDToolbar:
-        y: root.height - self.height - dp(20)
+        id: tool_bar
+        y: root.height - self.height
         md_bg_color: 1, 0, 0, 0
         opposite_colors: True
         title: "Profile"
         left_action_items:  [["menu", lambda x: x]]
         right_action_items: [["dots-vertical", lambda x: x]]
 
+# Layout - слой, в которое вставлено изображение - иконка пользователя
     MDFloatLayout:
         id: round_avatar
         size_hint: None, None
@@ -52,24 +125,27 @@
             size_hint: None, None
             size: "100dp", "100dp"
             mipmap: True
-            source: "data/images/11.jpg"
+            source: "data/images/avatar.jpg"
             radius: [self.height / 2,]
             pos_hint: {"center_x": .5, "center_y": .5}
             mipmap: True
 
+# Имя иконки
     MDLabel:
         id: user_name
         text: "S. Glazkov"
         font_style: "H3"
+        font_size: 26
         bold: True
         size_hint: None, None
         -text_size: None, None
         size: self.texture_size
         theme_text_color: "Custom"
         text_color: 1, 1, 1, 1
-        y: round_avatar.y + self.height / 2
+        y: round_avatar.y + self.height / 2 + 20
         x: round_avatar.x + round_avatar.width + dp(20)
 
+# Box слой - с двумя полями вывода - номер, почта
     MDBoxLayout:
         id: list_box
         orientation: "vertical"
@@ -86,6 +162,7 @@
             text: "Email"
             secondary_text: "kivydevelopment@gmail.com"
 
+# Кнопка - Позвонить
     MDFloatingActionButton:
 
         id: call_button
@@ -99,4 +176,11 @@
             root.animation_list_box(list_box)
             root.animation_round_avatar(round_avatar, user_name)
             root.animation_user_name(round_avatar, user_name)
+            root.animation_call_box(call_box, user_name)
+#"""бокс с 6 кнопочками - вывод""" изначально с прозрачностью(opacity) = 0
+    CallBox:
+        id: call_box
+        pos_hint: {"center_x": .5}
+        y: -self.height
+        opacity: 0
 

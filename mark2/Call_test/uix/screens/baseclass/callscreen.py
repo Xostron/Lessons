@@ -6,7 +6,10 @@ from kivy.animation import Animation
 from kivy.utils import get_color_from_hex
 from kivy.core.window import Window
 from kivymd.color_definitions import colors
-
+from kivy.config import Config
+Config.set('graphics', 'resizable', 0)
+Config.set('graphics', 'width', 350)
+Config.set('graphics', 'height', 700)
 # Читаем и загружаем KV файл
 with open(os.path.join(os.getcwd(), "uix", "screens", "kv", "callscreen.kv"), encoding="utf-8") as KV:
     Builder.load_string(KV.read())
@@ -19,6 +22,7 @@ class CallScreen(MDScreen):
     open_call_box2 = False
     open_call_box3 = False
     open_call_box4 = False
+    open_call_box5 = False
     blur_value = NumericProperty(0)
     def animation_call_button(self, call_button):
         if not self.open_call_box1:
@@ -103,9 +107,26 @@ class CallScreen(MDScreen):
         else:
             Animation(
                 x=round_avatar.x +50,
-                y=round_avatar.center_y - user_name.height - 20,
+                y=round_avatar.center_y - user_name.height - 30,
                 d=0.6,
                 t="in_out_quad",
             ).start(user_name)
             self.open_call_box4 = 0
 
+    def animation_call_box(self, call_box, user_name):
+        if not self.open_call_box5:
+            Animation(
+                y=user_name.y - call_box.height - 100,
+                opacity=1,
+                d=0.6,
+                t="in_out_quad",
+            ).start(call_box)
+            self.open_call_box5 = 1
+        else:
+            Animation(
+                y=-call_box.height,
+                opacity=0,
+                d=0.6,
+                t="in_out_quad",
+            ).start(call_box)
+            self.open_call_box5 = 0
