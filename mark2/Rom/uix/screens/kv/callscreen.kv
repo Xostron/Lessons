@@ -23,28 +23,25 @@
         size: "105dp", "105dp"
         md_bg_color: 1, 1, 1, 1
         radius: [self.height / 2,]
-        y: root.height * 45 / 100 + self.height
-        x: root.center_x - (self.width + name_book.width + dp(20)) / 2
+        FitImage:
+            size_hint: None, None
+            size: "100dp", "100dp"
+            mipmap: True
+            source: root.source
+            radius: [self.height / 2,]
+            pos_hint: {"center_x": .5, "center_y": .5}
+            mipmap: True
 
-    FitImage:
-        size_hint: None, None
-        size: "100dp", "100dp"
-        mipmap: True
-        source: root.source
-        radius: [self.height / 2,]
-        pos_hint: {"center_x": .5, "center_y": .5}
-        mipmap: True
-
-    MDLabel:
-        id: name_book
-        text: root.text
-        size_hint_y: None
-        height: self.texture_size[1]
-        font_size: 18
-        font_style: "Caption"
-        halign: "center"
-        theme_text_color: "Custom"
-        text_color: 1, 1, 1, 1
+        MDLabel:
+            id: name_book
+            text: root.text
+            size_hint_y: None
+            height: self.texture_size[1]
+            font_size: 18
+            font_style: "Caption"
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: 0, 1, 1, 1
 
 <CallBox@MDGridLayout>
     cols: 3
@@ -80,5 +77,5 @@
     CallBox:
         id: call_box
         pos_hint: {"center_x": .5}
-        y: 0
+        y: self.height
         opacity: 1
