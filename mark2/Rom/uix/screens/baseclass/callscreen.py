@@ -1,22 +1,30 @@
 import os
 from kivy.lang import Builder
-from kivy.properties import NumericProperty
+from kivy.properties import NumericProperty, StringProperty
 from kivymd.uix.screen import MDScreen
 from kivy.animation import Animation
 from kivy.utils import get_color_from_hex
 from kivy.core.window import Window
 from kivymd.color_definitions import colors
-from kivy.config import Config
-Config.set('graphics', 'resizable', 0)
-Config.set('graphics', 'width', 350)
-Config.set('graphics', 'height', 700)
+
+
 # Читаем и загружаем KV файл
-with open(os.path.join(os.getcwd(), "uix", "screens", "kv", "callscreen.kv"), encoding="utf-8") as KV:
+with open(os.path.join(os.getcwd(), "uix", "screens", "kv", "callscreen1.kv"),
+          encoding="utf-8") as KV:
     Builder.load_string(KV.read())
 
 
-class CallScreen(MDScreen):
+class CallScreen_1(MDScreen):
     # Флаг для анимации возврата экрана к исходному состоянию.
+    def __init__(self, **kwargs):
+        super(CallScreen_1, self).__init__(**kwargs)
+        Window.bind(on_touch_down=self.mouse_start_pos)
+        Window.bind(on_touch_up=self.mouse_reset_pos)
+        Window.bind(mouse_pos=self.mouse_pos_my)
+
+
+
+
     open_call_box = False
     open_call_box1 = False
     open_call_box2 = False
@@ -24,6 +32,46 @@ class CallScreen(MDScreen):
     open_call_box4 = False
     open_call_box5 = False
     blur_value = NumericProperty(0)
+    start_pos = 0
+    event_start_pos = False
+
+    def mouse_start_pos(self,*args):
+        if not self.event_start_pos:
+            self.event_start_pos = True
+            self.start_pos = args[1].pos[1]
+            self.alias_y = args[1].pos[1]
+            print("Press_down: " + str(self.start_pos))
+
+    def mouse_reset_pos(self,*args):
+        if self.event_start_pos:
+            self.event_start_pos = False
+            self.start_pos = 0
+            print("Press up: " + str(self.start_pos))
+
+    def mouse_pos_my(self, window, pos):
+        if self.event_start_pos:
+            self.alias_y = self.alias_y - pos[1]
+            if self.alias_y < 0:
+                #self.ids.notes.pos_hint['center_y'] = self.ids.notes.pos_hint['center_y']+0.03
+                # new_y = self.ids.notes.property('center_y').get(self) + 5
+                if self.ids.notes.pos_hint['center_y']<=0.85:
+                    self.ids.notes.myParam = self.ids.notes.myParam+0.02
+
+            else:
+                if self.ids.notes.pos_hint['center_y']>=.04:
+                    self.ids.notes.myParam = self.ids.notes.myParam-0.02
+
+                # new_y = self.ids.notes.property('center_y').get(self) - 5
+                #self.ids.notes.pos_hint['center_y'] = self.ids.notes.pos_hint['center_y'] - 0.03
+            self.alias_y = pos[1]
+
+            print('========: '+ str(self.ids.notes.pos_hint['center_y']))
+            #self.ids['notes'].pos_hint['center_y'].set(self, int(self.ids.notes.pos_hint['center_y']))
+            print('current_y            = '+ str(pos[1]))
+            print('current_alias        = ' + str(self.start_pos - pos[1]))
+            #print('new_y                = '+ str(new_y))
+            print('current_pos_layout   = '+str(self.ids.notes.property('center_y').get(self)))
+            print('size_layout   = ' + str(self.ids.notes.property('size').get(self)))
     # def animation_call_button(self, call_button):
     #     if not self.open_call_box1:
     #         Animation(
@@ -112,21 +160,43 @@ class CallScreen(MDScreen):
     #             t="in_out_quad",
     #         ).start(user_name)
     #         self.open_call_box4 = 0
-    #
-    # def animation_call_box(self, call_box, user_name):
+
+    # def animation_folder(self, folder, name_folder):
     #     if not self.open_call_box5:
     #         Animation(
-    #             y=user_name.y - call_box.height - 100,
-    #             opacity=1,
-    #             d=0.6,
+    #             opacity=0,
+    #             d=.3,
     #             t="in_out_quad",
-    #         ).start(call_box)
+    #         ).start(name_folder)
+    #
+    #         Animation(
+    #             pos_hint={"center_x": .5, 'center_y':.8},
+    #
+    #             d=0.3,
+    #             t="in_out_quad"
+    #         ).start(folder)
     #         self.open_call_box5 = 1
+    #         folder.spacing='1dp'
+    #         for i in range(1,7):
+    #             folder.ids['btn'+str(i)].ids['myIcon'].radius_coef = 2
+    #
+    #
+    #
     #     else:
     #         Animation(
-    #             y=-call_box.height,
-    #             opacity=0,
-    #             d=0.6,
+    #             opacity=1,
+    #             d=.3,
     #             t="in_out_quad",
-    #         ).start(call_box)
+    #         ).start(name_folder)
+    #
+    #         Animation(
+    #             pos_hint={"center_x": .5, 'center_y': .5},
+    #             d=0.3,
+    #             t="in_out_quad"
+    #         ).start(folder)
+    #         folder.spacing = '24dp'
+    #         for i in range(1, 7):
+    #             folder.ids['btn' + str(i)].ids['myIcon'].radius_coef = 1
+    #
     #         self.open_call_box5 = 0
+

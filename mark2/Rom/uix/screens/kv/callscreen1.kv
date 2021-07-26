@@ -1,0 +1,145 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import colors kivymd.color_definitions.colors
+#:import effect kivy.uix.effectwidget.EffectWidget
+#:import HorizontalBlurEffect kivy.uix.effectwidget.HorizontalBlurEffect
+#:import VerticalBlurEffect kivy.uix.effectwidget.VerticalBlurEffect
+#:import STANDARD_INCREMENT kivymd.material_resources.STANDARD_INCREMENT
+#:import IconLeftWidget kivymd.uix.list.IconLeftWidget
+#:import MDLabel kivymd.uix.label.MDLabel
+#:import Config kivy.config.Config
+
+#"""штучный элемент Заметки на главном экране"""
+<Note@MDFloatLayout>
+    size_hint: None, None
+    size: "140dp", "140dp"
+    md_bg_color: .7,.7,.7,1
+    my_title:""
+    my_text: ""
+    radius: [10, 10, 10, 10]
+    MDLabel:
+        id: myTitle
+        text: root.my_title
+        size_hint_y: None
+        size_hint_x: None
+        height: self.texture_size[1]
+        #"""font_style: "Caption""""
+        halign: "left"
+        #"""theme_text_color: "Custom""""
+        text_color: .1, .1, .1, 1
+        y: root.y + root.height - self.height - 5
+        x: root.x + 5
+        md_bg_color: get_color_from_hex(colors["Green"]["A700"])
+        -text_size: None, None
+        size: self.texture_size
+        opacity: 1
+
+    MDLabel:
+        id: myText
+        text: root.my_text[0:10]+'...'
+        size_hint_y: None
+        size_hint_x: None
+        height: self.texture_size[1]
+        font_style: "Caption"
+        halign: "left"
+        #"""theme_text_color: "Custom""""
+        text_color: .1, .1, .1, 1
+        y: root.y + root.height - self.height*3.5 - 5
+        x: root.x + 5
+        md_bg_color: get_color_from_hex(colors["Green"]["A700"])
+        -text_size: None, None
+        size: self.texture_size
+        opacity: 1
+#"""Набор заметок на главном экране"""
+<CallNotes@MDGridLayout>
+    cols: 2
+    rows: 6
+    adaptive_size: True
+    spacing: "30dp"
+    padding: 20
+
+    Note:
+        id: note1
+        my_title: "sdfsd"
+        my_text: "sdfsdgdfggdfdddddddddddddddd"
+
+    Note:
+        id: note1
+        my_title: "sdfsd"
+        my_text: "sdfsdgdfggdf"
+
+    Note:
+        id: note1
+        my_title: "sdfsd"
+        my_text: "sdfsdgdfggdf"
+
+    Note:
+        id: note1
+        my_title: "sdfsd"
+        my_text: "sdfsdgdfggdf"
+
+    Note:
+        id: note1
+        my_title: "sdfsd"
+        my_text: "sdfsdgdfggdf"
+
+    Note:
+        id: note1
+        my_title: "sdfsd"
+        my_text: "sdfsdgdfggdf"
+    Note:
+        id: note1
+        my_title: "sdfsd"
+        my_text: "sdfsdgdfggdf"
+    Note:
+        id: note1
+        my_title: "sdfsd"
+        my_text: "sdfsdgdfggdf"
+    Note:
+        id: note1
+        my_title: "sdfsd"
+        my_text: "sdfsdgdfggdf"
+
+    Note:
+        id: note1
+        my_title: "sdfsd"
+        my_text: "sdfsdgdfggdf"
+    Note:
+        id: note1
+        my_title: "sdfsd"
+        my_text: "sdfsdgdfggdf"
+    Widget:
+        id: empty
+
+<CallScreen_1>
+
+
+
+#"""Набор заметок"""
+    CallNotes:
+        id: notes
+        myParam: 0
+        pos_hint: {"center_x": .5, 'center_y':.04+self.myParam}
+        opacity: 1
+        md_bg_color: .5,.5,.5,1
+
+
+
+#"""Верхняя панель Notes"""
+    MDToolbar:
+        id: tool_bar
+        title: "Notes"
+        y: root.height - self.height
+        md_bg_color: .7,.7,.7,1
+        opposite_colors: True
+        #"""left_action_items:  [["menu", lambda x: x]]"""
+        #"""right_action_items: [["dots-vertical", lambda x: x]]"""
+
+#"""Кнопка создать заметку"""
+    MDFloatingActionButton:
+        id: call_button
+        icon: "pencil-plus"
+        center_x: root.width - self.width/2 - 20
+        y: root.y + 50
+        md_bg_color: app.theme_cls.accent_color
+
+

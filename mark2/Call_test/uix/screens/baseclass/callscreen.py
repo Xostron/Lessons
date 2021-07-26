@@ -102,7 +102,7 @@ class CallScreen(MDScreen):
                 y=user_name.y - 50,
                 d=0.6,
                 t="in_out_quad",
-            ).start(self.ids.user_name)
+            ).start(user_name)
             self.open_call_box4 = 1
         else:
             Animation(

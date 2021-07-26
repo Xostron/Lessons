@@ -9,7 +9,8 @@
 #:import Config kivy.config.Config
 
 
-#"""Сборка основного экрана"""
+#"""бокс с 6 кнопками - Бокс-слой состоящий из 1секции -слоя-подложки в которой"""
+#"""находятся картинка, и 2секции - текста """
 <CallBoxButton@MDBoxLayout>
     orientation: "vertical"
     adaptive_size: True
@@ -18,11 +19,13 @@
     text: ""
 
     MDFloatLayout:
-        id: round_avatar
+        id: round_back
         size_hint: None, None
         size: "105dp", "105dp"
-        md_bg_color: 1, 1, 1, 1
+        md_bg_color: 0, 0, 1, 1
         radius: [self.height / 2,]
+        #"""y: root.height * 45 / 100 + self.height"""
+        #"""x: root.center_x - (self.width + name_book.width + dp(20)) / 2"""
         FitImage:
             size_hint: None, None
             size: "100dp", "100dp"
@@ -32,50 +35,161 @@
             pos_hint: {"center_x": .5, "center_y": .5}
             mipmap: True
 
-        MDLabel:
-            id: name_book
-            text: root.text
-            size_hint_y: None
-            height: self.texture_size[1]
-            font_size: 18
-            font_style: "Caption"
-            halign: "center"
-            theme_text_color: "Custom"
-            text_color: 0, 1, 1, 1
 
+    MDLabel:
+        id: name_book
+        text: root.text
+        size_hint_y: None
+        height: self.texture_size[1]
+        font_size: 18
+        font_style: "Caption"
+        halign: "center"
+        theme_text_color: "Custom"
+        text_color: 0, 1, 1, 1
+
+
+#"""формирование из боксов секции grid 2*3 """
+#""" """
 <CallBox@MDGridLayout>
+    md_bg_color: 0, 0, 1, 1
+    cols: 2
+    rows: 3
+    adaptive_size: True
+    spacing: "10dp"
+
+    CallBoxButton:
+        source: "data/images/1.jpg"
+        text: "Mute1"
+    CallBoxButton:
+        source: "data/images/1.jpg"
+        text: "Speaker2"
+
+    CallBoxButton:
+        source: "data/images/1.jpg"
+        text: "Keypad3"
+
+    CallBoxButton:
+        source: "data/images/1.jpg"
+        text: "Add call4"
+    CallBoxButton:
+        source: "data/images/1.jpg"
+        text: "Transfer5"
+    CallBoxButton:
+        source: "data/images/1.jpg"
+        text: "Contact6"
+
+#"""Окно открытой папки"""
+<FolderBoxButton@MDBoxLayout>
+
+    orientation: "vertical"
+    adaptive_size: True
+    spacing: "8dp"
+    icon: ""
+    text: ""
+
+
+    MDIconButton:
+        id: myIcon
+        icon: root.icon
+        theme_text_color: "Custom"
+        text_color: .1, .1, .1, 1
+        radius_coef: 1
+        radius_res: min(self.width, self.height) / (self.radius_coef+1)
+        canvas:
+
+            Color:
+
+                rgba: 1, 0, 0, 1
+            Line:
+                id: myLine
+                width: 1
+
+                circle:
+                    (self.center_x, \
+                    self.center_y, \
+                    self.radius_res, 0, 360,)
+
+    MDLabel:
+        id: myLabel
+        text: root.text
+        size_hint_y: None
+        height: self.texture_size[1]
+        font_style: "Caption"
+        halign: "center"
+        theme_text_color: "Custom"
+        text_color: .1, .1, .1, 1
+        opacity: 1
+
+#"""Содержимое папки"""
+<CallFolder@MDGridLayout>
+
     cols: 3
     rows: 2
     adaptive_size: True
-    spacing: "24dp"
+    spacing: "25dp"
 
-    CallBoxButton:
-        source: "data/images/1.jpg"
+
+    FolderBoxButton:
+        id: btn1
+        icon: "microphone-off"
         text: "Mute"
-    CallBoxButton:
-        source: "data/images/1.jpg"
+
+    FolderBoxButton:
+        id: btn2
+        icon: "volume-high"
         text: "Speaker"
-    CallBoxButton:
-        source: "data/images/1.jpg"
+    FolderBoxButton:
+        id: btn3
+        icon: "dialpad"
         text: "Keypad"
 
-    CallBoxButton:
-        source: "data/images/1.jpg"
+    FolderBoxButton:
+        id: btn4
+        icon: "plus-circle"
         text: "Add call"
-    CallBoxButton:
-        source: "data/images/1.jpg"
+    FolderBoxButton:
+        id: btn5
+        icon: "call-missed"
         text: "Transfer"
-    CallBoxButton:
-        source: "data/images/1.jpg"
+    FolderBoxButton:
+        id: btn6
+        icon: "account"
         text: "Contact"
 
-
-
-
-
 <CallScreen>
-    CallBox:
-        id: call_box
-        pos_hint: {"center_x": .5}
-        y: self.height
+    #"""CallBox:"""
+        #"""id: call_box"""
+        #"""pos_hint: {"center_x": .5, 'center_y':.5}"""
+        #"""y: self.height"""
+        #"""opacity: 1"""
+
+#"""Открытая папка"""
+    CallFolder:
+        id: folder
+        pos_hint: {"center_x": .5, 'center_y':.5}
+        md_bg_color: 0,0,0,0
+
         opacity: 1
+        md_bg_color: get_color_from_hex(colors["Green"]["A700"])
+#"""наименование папки"""
+    MDLabel:
+        id: name_folder
+        text: 'Test App'
+        font_size: 18
+        halign: "center"
+        text_color: .1, .1, .1, 1
+        y: folder.y + folder.height + 20
+        center_x: folder.x + folder.width/2
+        size_hint: None, None
+        md_bg_color: get_color_from_hex(colors["Green"]["A700"])
+        -text_size: None, None
+        size: self.texture_size
+        opacity: 1
+#"""кнопка развернуть-свернуть папку"""
+    MDFloatingActionButton:
+        id: call_button
+        icon: "music"
+        center_x: folder.x + folder.width/2
+        y: root.y + 20
+        md_bg_color: get_color_from_hex(colors["Green"]["A700"])
+        on_release: root.animation_folder(folder, name_folder)
