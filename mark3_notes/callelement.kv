@@ -1,0 +1,125 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import colors kivymd.color_definitions.colors
+#:import effect kivy.uix.effectwidget.EffectWidget
+#:import HorizontalBlurEffect kivy.uix.effectwidget.HorizontalBlurEffect
+#:import VerticalBlurEffect kivy.uix.effectwidget.VerticalBlurEffect
+#:import STANDARD_INCREMENT kivymd.material_resources.STANDARD_INCREMENT
+#:import IconLeftWidget kivymd.uix.list.IconLeftWidget
+#:import MDLabel kivymd.uix.label.MDLabel
+#:import Config kivy.config.Config
+#:import Button kivy.uix.button
+
+#"""иконки заметок"""
+<Note@MDFloatLayout>
+    size_hint: None, None
+    size: "160dp", "160dp"
+    md_bg_color: .7,.7,.7,1
+    my_title:""
+    my_text: ""
+    radius: [10, 10, 10, 10]
+    canvas:
+        Color:
+            rgba: 1, 1, 1, 1
+
+        Line:
+            width: 1
+            rounded_rectangle: (self.x, self.y, self.width, self.height,10)
+
+
+
+    MDLabel:
+        id: myTitle
+        text: root.my_title
+        size_hint_y: None
+        size_hint_x: None
+        height: self.texture_size[1]
+        #"""font_style: "Caption""""
+        halign: "left"
+        #"""theme_text_color: "Custom""""
+        text_color: .1, .1, .1, 1
+        y: root.y + root.height - self.height - 5
+        x: root.x + 5
+        md_bg_color: get_color_from_hex(colors["Green"]["A700"])
+        -text_size: None, None
+        size: self.texture_size
+        opacity: 1
+
+    MDLabel:
+        id: myText
+        text: root.my_text[0:10]+'...'
+        size_hint_y: None
+        size_hint_x: None
+        height: self.texture_size[1]
+        font_style: "Caption"
+        halign: "left"
+        #"""theme_text_color: "Custom""""
+        text_color: .1, .1, .1, 1
+        y: root.y + root.height - self.height*3.5 - 5
+        x: root.x + 5
+        md_bg_color: get_color_from_hex(colors["Green"]["A700"])
+        -text_size: None, None
+        size: self.texture_size
+        opacity: 1
+    Button:
+        icon: '1.jpg'
+        x: root.x
+        y: root.y
+        on_release: root.pushMe(self)
+        opacity: 0
+
+
+#"""Слой для иконок"""
+<CallNotes@MDGridLayout>
+    id: Imperor
+    cols: 2
+
+    adaptive_height: True
+    spacing: "10dp"
+    padding: [10,70,0,50]
+    md_bg_color: .5,.5,.5,1
+
+#"""строка меню"""
+<Tool>
+#"""Верхняя панель Notes"""
+    MDToolbar:
+        id: tool_bar
+        title: "Notes"
+        md_bg_color: .7,.7,.7,1
+        opposite_colors: True
+        #"""left_action_items:  [["menu", lambda x: x]]"""
+        #"""right_action_items: [["dots-vertical", lambda x: x]]"""
+        y: root.height - self.height
+
+#"""кнопка-иконка"""
+<CustomBtn>
+#"""Кнопка создать заметку"""
+    MDFloatingActionButton:
+        id: call_button
+        icon: "pencil-plus"
+        md_bg_color: app.theme_cls.accent_color
+        on_press: root.add_note(self)
+        canvas:
+            Color:
+                rgba: 1, 1, 1, 1
+            Line:
+                width: 1
+                circle:
+                    (\
+                    self.center_x, \
+                    self.center_y, \
+                    min(self.width, self.height) / 2, \
+                    0, \
+                    360, \
+                    )
+<Screen2>
+#"""Заметка - содержание"""
+    MDScreen:
+        md_bg_color: .95,.95,.95,1
+        MDTextField:
+            multiline: True
+            hint_text: "Multi-line text"
+            mode: "fill"
+            pos_hint: {"center_x": .5, "center_y": .5}
+
+
+
