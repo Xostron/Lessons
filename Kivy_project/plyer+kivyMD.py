@@ -13,7 +13,7 @@ MDFloatLayout:
         id: img
     MDRaisedButton:
         text: "Upload"
-        pos_hint: {"center_x":.5, "center_y":.4}
+        pos_hint: {"center_x":.5, "center_y":.2}
         on_release:
             app.file_chooser()
     MDLabel:
@@ -34,6 +34,7 @@ class myApp(MDApp):
     def selected(self, selection):
         if selection:
             self.root.ids.img.source = selection[0]
+            print(selection)
 
 
 
