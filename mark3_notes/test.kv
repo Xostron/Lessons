@@ -1,0 +1,68 @@
+<MyItem>
+    coef_y: 20
+    coef_x: 10
+    MDLabel:
+        id: first_text
+        text: 'Garro'
+        y: myPic.y + myPic.height - root.coef_y
+        x: myPic.x + myPic.width + root.coef_x
+
+        size_hint_y: None
+        size_hint_x: None
+        height: self.texture_size[1]
+        font_style: "Caption"
+        halign: "left"
+        theme_text_color: "Custom"
+        text_color: .1, .1, .1, 1
+        -text_size: None, None
+        size: self.texture_size
+        opacity: 1
+    MDLabel:
+        id: secondary_text
+        text: 'Grey Knight'
+        y: first_text.y - root.coef_y + 5
+        x: first_text.x
+
+        size_hint_y: None
+        size_hint_x: None
+        height: self.texture_size[1]
+        font_style: "Caption"
+        halign: "left"
+        theme_text_color: "Custom"
+        text_color: .1, .1, .1, 1
+        -text_size: None, None
+        size: self.texture_size
+        opacity: 1
+
+    ImageLeftWidget:
+        id: myPic
+        source: "data/logo/kivy-icon-256.png"
+
+
+<Tool>
+    MDToolbar:
+        id: toolbar
+        title: "Inbox"
+        left_action_items: [["menu"]]
+        right_action_items: [["magnify"], ["dots-vertical"]]
+        md_bg_color: 0, 0, 0, 1
+        y: root.height - self.height
+
+
+
+
+<test_selection>
+
+    MDSelectionList:
+        id: Loki
+        padding: "24dp", "-10dp", "24dp", "24dp"
+        cols: 1
+        spacing: "12dp"
+        size_hint_y: None
+
+        overlay_color: app.overlay_color[:-1] + [.2]
+        icon_bg_color: app.overlay_color
+        progress_round_color: app.progress_round_color
+        on_selected: app.on_selected(*args)
+        #"""on_unselected: app.on_unselected(*args)"""
+        #"""on_selected_mode: app.set_selection_mode(*args)"""
