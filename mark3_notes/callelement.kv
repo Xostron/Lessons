@@ -8,24 +8,48 @@
 #:import MDLabel kivymd.uix.label.MDLabel
 #:import Config kivy.config.Config
 #:import Button kivy.uix.button
+#:import CodeInput kivy.uix.codeinput
+#:import KivyLexer kivy.extras.highlight
+
+
+
+
+
 
 #"""иконки заметок"""
 <Note@MDFloatLayout>
+    my_delay: 1
+    my_reaction: 0.1
+    my_angle: 0
+    my_color_circle_outer: (.7,.7,.7,1)
+
     size_hint: None, None
     size: "160dp", "160dp"
     md_bg_color: .7,.7,.7,1
     my_title:""
     my_text: ""
+    my_date: "28.09.2021"
+    my_id: 0
+    full_title: ""
+    full_text: ""
     radius: [10, 10, 10, 10]
+
     canvas:
         Color:
-            rgba: 1, 1, 1, 1
+            rgba: root.my_color_circle_outer
+        Ellipse:
+            angle_start: 0
+            angle_end: root.my_angle
+            pos: self.x+self.width/2-25, self.y+25
+            size: 50, 50
 
-        Line:
-            width: 1
-            rounded_rectangle: (self.x, self.y, self.width, self.height,10)
-
-
+        Color:
+            rgba: root.md_bg_color
+        Ellipse:
+            angle_start: 0
+            angle_end: 360
+            pos: self.x+self.width/2-15, self.y + 35
+            size: 30,30
 
     MDLabel:
         id: myTitle
@@ -46,7 +70,7 @@
 
     MDLabel:
         id: myText
-        text: root.my_text[0:10]+'...'
+        text: root.my_text[0:20]+'...'
         size_hint_y: None
         size_hint_x: None
         height: self.texture_size[1]
@@ -60,11 +84,30 @@
         -text_size: None, None
         size: self.texture_size
         opacity: 1
+
+    MDLabel:
+        id: myDate
+        text: root.my_date
+        size_hint_y: None
+        size_hint_x: None
+        height: self.texture_size[1]
+        font_style: "Caption"
+        halign: "left"
+        #"""theme_text_color: "Custom""""
+        text_color: .5, .5, .5, 1
+        y: root.y + 5
+        x: root.x + 5
+        md_bg_color: get_color_from_hex(colors["Green"]["A700"])
+        -text_size: None, None
+        size: self.texture_size
+        opacity: 1
+
     Button:
         icon: '1.jpg'
         x: root.x
         y: root.y
-        on_release: root.pushMe(self)
+        on_press: root.Helper_CSF(self)
+        on_release: root.Create_select_func(self)
         opacity: 0
 
 
@@ -78,9 +121,8 @@
     padding: [10,70,0,50]
     md_bg_color: .5,.5,.5,1
 
-#"""строка меню"""
+#"""строка меню для главного экрана"""
 <Tool>
-#"""Верхняя панель Notes"""
     MDToolbar:
         id: tool_bar
         title: "Notes"
@@ -111,15 +153,41 @@
                     0, \
                     360, \
                     )
+
+
+#""""Экран редактирования""""
 <Screen2>
+
 #"""Заметка - содержание"""
     MDScreen:
         md_bg_color: .95,.95,.95,1
-        MDTextField:
+
+        MDToolbar:
+            id: tool_bar
+            title: Input_Title.text
+            md_bg_color: .7,.7,.7,1
+            opposite_colors: True
+            left_action_items:  [["arrow-left", lambda x: root.my_back(self)]]
+            right_action_items: [["delete", lambda x: root.my_delete(self)], ["check", lambda x: root.my_back(self)]]
+            y: root.height - self.height
+            elevation: 10
+
+        TextInput:
+            id: Input_Title
+            hint_text: "Title..."
+            text: "kuji podcast"
             multiline: True
-            hint_text: "Multi-line text"
-            mode: "fill"
-            pos_hint: {"center_x": .5, "center_y": .5}
+            size_hint: 0.95, 0.15
+            pos_hint: {"center_x": 0.5, "center_y":0.8}
+
+        TextInput:
+            id: Input_Body
+            hint_text: "Note..."
+            multiline: True
+            size_hint: 0.95, 0.7
+            pos_hint: {"center_x": 0.5, "center_y":0.365}
+
+
 
 
 
