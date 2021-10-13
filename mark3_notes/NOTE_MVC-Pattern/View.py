@@ -16,19 +16,29 @@ import Controller
 
 
 class CallNotes(MDGridLayout):
-    """слой для иконок"""
+    """
+    Layout for class Note
+    """
     pass
 
 
 class Tool(MDScreen):
-    """верхняя строка меню - главный экран"""
+    """
+    Toolbar for main screen
+    """
     pass
 
 
 class Note(MDFloatLayout):
-    """иконки заметок"""
+    """
+    icon Notes
+    """
 
     def __init__(self, class_controller, **kwargs):
+        """
+        constructor of class
+        Controller: class View is part of class Controller
+        """
         super(Note, self).__init__(**kwargs)
         self.click = False
         self.selected = False
@@ -37,6 +47,9 @@ class Note(MDFloatLayout):
         self.Controller = class_controller
 
     def Helper_CSF(self, instance):
+        """
+        auxiliary function for process event press_on
+        """
         self.Controller.View.time_1st = time.time()
         self.help_selected = True
         print(f"нажата заметка - Helper {self.Controller.View.time_1st}")
@@ -55,6 +68,9 @@ class Note(MDFloatLayout):
             self.my_color_circle_outer = (.3, .5, .8, 1)
 
     def Create_select_func(self, instance):
+        """
+        Event note press_on
+        """
         self.Controller.View.time_2nd = time.time()
         time_res = round(self.Controller.View.time_2nd - self.Controller.View.time_1st, 2)
         print(f"Нажата заметка - Create_Select_func {time_res}")
@@ -122,7 +138,9 @@ class CustomBtn(MDFloatingActionButton):
         self.Controller = class_controller
 
     def add_note(self, instance):
-        """метод - создание заметки"""
+        """
+        create note
+        """
         # добавление заметки на слой
         self.Controller.View.List_notes.append(Note(class_controller=self.Controller))
         self.Controller.View.Manager.switch_to(self.Controller.View.manager_list[1])
@@ -138,7 +156,7 @@ class CustomBtn(MDFloatingActionButton):
 
 class Screen2(MDScreen):
     """
-    Экран редактирования заметки
+    Edit Screen note
     """
 
     def __init__(self, class_controller, **kwargs):
@@ -147,7 +165,7 @@ class Screen2(MDScreen):
 
     def my_back(self, instance):
         """
-        кнопка перехода на главный экран
+        return back to Main Screen
         """
         # existing note
         for note in self.Controller.View.List_notes:
@@ -196,7 +214,7 @@ class Screen2(MDScreen):
 
     def my_delete(self, instance):
         """
-        удалить заметку существующую или новую
+        Button deleting note on toolbar of screen edit
         """
         temp_list = []
         for i, note in enumerate(self.Controller.View.List_notes):
@@ -214,6 +232,9 @@ class Screen2(MDScreen):
 
 
 class View():
+    """
+    main class
+    """
     title = "Notes = py+kivy"
     overlay_color = get_color_from_hex("#6042e4")
     progress_round_color = get_color_from_hex("#ef514b")
@@ -225,6 +246,7 @@ class View():
     item_selection = []
 
     def __init__(self, class_controller, **kwargs):
+
         super(View, self).__init__(**kwargs)
 
         self.Controller = class_controller
@@ -262,6 +284,14 @@ class View():
         self.update_note(self.Controller)
 
     def update_note(self, class_controller):
+        """
+        функция обновления экрана с заметками, use as first init
+        class_controller - объект приложения из Controller.py
+
+        data: текст заметки из БД
+        List_notes: список объектов заметок
+        SM_layout_note: объект слой для вывода заметок
+        """
         data = class_controller.get_from_DB()
         if len(data):
             self.count_notes = data[len(data) - 1][0] + 1
@@ -283,7 +313,7 @@ class View():
                 self.List_notes[-1].my_date = row[3]
                 self.SM_layout_note.add_widget(self.List_notes[-1])
 
-
+# чтение структурного файла .kv
 with open(file="elements.kv", encoding="utf-8") as KV:
     Builder.load_string(KV.read())
 Window.size = (350, 600)
@@ -291,8 +321,12 @@ Window.size = (350, 600)
 
 def ParseShortName(ori, length):
     """
-    Функция копирования строки ori в строку res имеющей фиксированную длину length
-    c фильтром для символа "переход каретки"
+    Работа со строкой:
+    - ограничение исходной строки до кол-ва символов length
+    - ограничение строки до символа "перенос каретки"
+
+    ori: исходный текст
+    length: максимальное количество символов в результате res
     """
     res = ''
     for i in ori[:length]:
@@ -306,6 +340,7 @@ def ParseShortName(ori, length):
 
 def Unselected_all(class_controller):
     """
+    Снятие выделения заметок по кнопке на панели меню
     """
     for i in class_controller.View.List_notes:
         i.selected = False
@@ -319,8 +354,15 @@ def Unselected_all(class_controller):
 
 def Delete_selected(class_controller):
     """
+    Удаление заметки с экрана и БД
+    class_controller - объект приложения из Controller.py
+
+    item_selection: список индексов заметок для удаления из БД
+    List_notes: список объектов заметок
+    SM_layout_note: объект слой для вывода заметок
     """
     print(f'{len(class_controller.View.List_notes)}***************1****************')
+    # цикл удаления заметки с виджета и из списка заметок
     for note in class_controller.View.List_notes[len(class_controller.View.List_notes)::-1]:
         if note.selected:
             print(f'delete - {note.selected}')
@@ -328,6 +370,7 @@ def Delete_selected(class_controller):
             class_controller.View.List_notes.remove(note)
     Unselected_all(class_controller)
     print('@@@@@ deleting list ', class_controller.View.item_selection)
+    # цикл удаления заметок из БД
     for i in class_controller.View.item_selection:
         print('check deleting', i, type(i))
         class_controller.del_note_DB(i)

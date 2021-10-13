@@ -2,7 +2,15 @@ import sqlite3
 
 
 class Model:
+    """
+    class Model: only interaction with DB
+    function:
+    Saving text note in DB
+    Deleting text note from DB
+    Update text note in DB
+    Getting text note from DB
 
+    """
     def __init__(self, class_controller):
         self.connection = sqlite3.connect('Note_v2.db')
         self.cursor = self.connection.cursor()
